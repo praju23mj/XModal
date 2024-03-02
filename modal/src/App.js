@@ -11,21 +11,25 @@ function App() {
     dob: "",
   });
 
+  const [error, setError] = useState('');
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData({ ...formData, [id]: value });
   };
+
   const handleSubmit = () => {
     const { username, email, dob, phone } = formData;
     if (!username || !email || !dob || !phone) {
-      alert("Please fill in all fields.");
+      setError("Please fill in all fields.");
     } else if (!email.includes("@")) {
-      alert("Please include an '@' in the email address.'hjhjhj' is missing an '@' ");
+      setError("Please include an '@' in the email address.'hjhjhj' is missing an '@' ");
     } else if (!/^\d{10}$/.test(phone)) {
-      alert("Invalid phone number. Please enter a 10-digit phone number.");
+      setError("Invalid phone number. Please enter a 10-digit phone number.");
     } else if (new Date(dob) > new Date()) {
-      alert("Invalid date of birth. Date of birth cannot be in the future.");
+      setError("Invalid date of birth. Date of birth cannot be in the future.");
     } else {
+      setError('')
       // Submit logic here
       alert("Form submitted successfully!");
       setFormData({
@@ -51,6 +55,7 @@ function App() {
         <div className="modal" onClick={closeModal}>
           <div className="modal-content">
             <h2>Fill Details</h2>
+            {error && <p className="error">{error}</p>}
             <form>
               <label htmlFor="username">Username:</label>
               <input
@@ -90,6 +95,7 @@ function App() {
               </button>
             </form>
           </div>
+          <div className="modal-overlay" onClick={closeModal}></div>
         </div>
       )}
     </div>
