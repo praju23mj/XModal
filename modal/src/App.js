@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useRef} from "react";
 import './App.css';
 
 function App() {
@@ -12,6 +12,7 @@ function App() {
   });
 
   const [error, setError] = useState('');
+  const modalRef = useRef();
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -42,10 +43,15 @@ function App() {
     }
   };
 
-  const closeModal = (e) => {
-    if (e.target.className === "modal") {
+  const closeModal = () => {
       setIsOpen(false);
     }
+
+    const handleOverlayClick = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        closeModal();
+      }
+
   };
   return (
     <div>
@@ -95,7 +101,7 @@ function App() {
               </button>
             </form>
           </div>
-          <div className="modal-overlay" onClick={closeModal}></div>
+          <div className="modal-overlay" onClick={handleOverlayClick}></div>
         </div>
       )}
     </div>
